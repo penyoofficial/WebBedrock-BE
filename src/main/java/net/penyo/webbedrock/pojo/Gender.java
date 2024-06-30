@@ -7,11 +7,13 @@ package net.penyo.webbedrock.pojo;
  */
 public enum Gender {
 
-    MALE("male"), FEMALE("female");
+    /**
+     * 公
+     */
+    MALE,
 
-    public final String value;
-
-    Gender(String value) {
-        this.value = value;
-    }
+    /**
+     * 母
+     */
+    FEMALE
 }

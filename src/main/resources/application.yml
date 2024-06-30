@@ -11,3 +11,6 @@ mybatis:
 
 server:
   port: 24681
+
+jwt:
+  secret: 3fd89eb3892h1c4f

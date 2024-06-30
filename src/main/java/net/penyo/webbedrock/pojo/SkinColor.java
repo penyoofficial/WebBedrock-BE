@@ -7,11 +7,78 @@ package net.penyo.webbedrock.pojo;
  */
 public enum SkinColor {
 
-    WHITE("white"), BLACK("black"), YELLOW("yellow"), GRAY("gray"), BROWN("brown"), ORANGE("orange"), GINGER("ginger"), TABBY("tabby"), TORTOISE_SHELL("tortoise shell"), CALICO("calico"), BLUE("blue"), CREAM("cream"), SILVER("silver"), LILAC("lilac"), FAWN("fawn");
+    /**
+     * 白色
+     */
+    WHITE,
 
-    public final String value;
+    /**
+     * 黑色
+     */
+    BLACK,
 
-    SkinColor(String value) {
-        this.value = value;
-    }
+    /**
+     * 黄色
+     */
+    YELLOW,
+
+    /**
+     * 灰色
+     */
+    GRAY,
+
+    /**
+     * 棕色
+     */
+    BROWN,
+
+    /**
+     * 橙色
+     */
+    ORANGE,
+
+    /**
+     * 姜黄色
+     */
+    GINGER,
+
+    /**
+     * 虎斑色
+     */
+    TABBY,
+
+    /**
+     * 龟甲色
+     */
+    TORTOISE_SHELL,
+
+    /**
+     * 三花色
+     */
+    CALICO,
+
+    /**
+     * 蓝色
+     */
+    BLUE,
+
+    /**
+     * 奶油色
+     */
+    CREAM,
+
+    /**
+     * 银色
+     */
+    SILVER,
+
+    /**
+     * 丁香色
+     */
+    LILAC,
+
+    /**
+     * 驼色
+     */
+    FAWN
 }

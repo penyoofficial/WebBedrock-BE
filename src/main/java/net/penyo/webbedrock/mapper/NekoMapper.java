@@ -1,7 +1,7 @@
 package net.penyo.webbedrock.mapper;
 
+import net.penyo.webbedrock.mapper.sql.NekoSql;
 import net.penyo.webbedrock.po.Neko;
-import net.penyo.webbedrock.util.DynamicSql;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
@@ -14,18 +14,17 @@ import java.util.List;
  */
 @Repository
 @Mapper
-public interface NekoMapper {
+public interface NekoMapper extends BaseMapper<Neko> {
 
-    @Insert("insert nekos (name, gender, age, skin_color, father_id, mother_id) values (#{name}, #{gender}, #{age}, #{skinColor}, #{fatherId}, #{motherId})")
-    @Options(useGeneratedKeys = true, keyProperty = "id")
-    int insert(Neko neko);
+    @InsertProvider(type = NekoSql.class, method = "insert")
+    int insert(Neko obj);
 
-    @Delete("delete from nekos where id = #{id}")
+    @DeleteProvider(type = NekoSql.class, method = "delete")
     int delete(int id);
 
-    @Update("update nekos set name = #{name}, gender = #{gender}, age = #{age}, skin_color = #{skinColor}, father_id = #{fatherId}, mother_id = #{motherId} WHERE id = #{id}")
-    int update(Neko neko);
+    @UpdateProvider(type = NekoSql.class, method = "update")
+    int update(Neko obj);
 
-    @SelectProvider(type = DynamicSql.class, method = "query")
-    List<Neko> query(Neko neko);
+    @SelectProvider(type = NekoSql.class, method = "query")
+    List<Neko> query(Neko obj);
 }
