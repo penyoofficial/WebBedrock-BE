@@ -1,7 +1,7 @@
 package net.penyo.webbedrock.controllor;
 
-import net.penyo.webbedrock.permission.Filter;
 import net.penyo.webbedrock.service.BaseService;
+import net.penyo.webbedrock.util.ActionProcessor;
 import net.penyo.webbedrock.util.Body;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,15 +27,15 @@ public interface BaseController<PO, SV extends BaseService<PO>> {
     SV getService();
 
     default ResponseEntity<Body> insert(PO po) {
-        return Filter.ifResult(getService().insert(po));
+        return ActionProcessor.ifResult(getService().insert(po));
     }
 
     default ResponseEntity<Body> delete(int id) {
-        return Filter.ifResult(getService().delete(id));
+        return ActionProcessor.ifResult(getService().delete(id));
     }
 
     default ResponseEntity<Body> update(PO po) {
-        return Filter.ifResult(getService().update(po));
+        return ActionProcessor.ifResult(getService().update(po));
     }
 
     default ResponseEntity<Body> query(PO po, String msg) {

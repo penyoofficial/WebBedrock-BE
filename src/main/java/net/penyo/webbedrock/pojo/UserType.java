@@ -1,9 +1,7 @@
 package net.penyo.webbedrock.pojo;
 
 /**
- * Class introduction.
- *
- * <p>Class description (Optional).
+ * An object representing user's type.
  *
  * @author Penyo
  */

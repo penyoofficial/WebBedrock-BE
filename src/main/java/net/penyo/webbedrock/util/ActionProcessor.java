@@ -1,31 +1,30 @@
-package net.penyo.webbedrock.permission;
+package net.penyo.webbedrock.util;
 
 import net.penyo.webbedrock.service.UserService;
-import net.penyo.webbedrock.util.Body;
-import net.penyo.webbedrock.util.Jwt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 
 /**
- * An object which provides simple packaging solutions.
+ * An object which provides simple packaging solutions for actions.
  *
  * @author Penyo
  */
 @RestControllerAdvice
-public class Filter {
+public class ActionProcessor {
 
-    protected Filter() {
+    protected ActionProcessor() {
     }
 
     private static UserService userService;
 
     @Autowired
-    private Filter(UserService userService) {
-        Filter.userService = userService;
+    private ActionProcessor(UserService userService) {
+        ActionProcessor.userService = userService;
     }
 
     public static ResponseEntity<Body> onlyAdminCanDo(String token) {
@@ -47,8 +46,19 @@ public class Filter {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Body(result, null));
     }
 
-    @ExceptionHandler({MissingRequestHeaderException.class})
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Body> handleException(Exception e) {
+        e.printStackTrace();
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Body("拒绝执行！因为未知的错误", null));
+    }
+
+    @ExceptionHandler(MissingRequestHeaderException.class)
     public ResponseEntity<Body> handleMissingRequestHeaderException() {
-        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Body("拒绝执行！因为缺失令牌", null));
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Body("拒绝执行！因为缺失凭证", null));
+    }
+
+    @ExceptionHandler(HandlerMethodValidationException.class)
+    public ResponseEntity<Body> handleHandlerMethodValidationException() {
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Body("拒绝执行！因为请求数据格式非法", null));
     }
 }

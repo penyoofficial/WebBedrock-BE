@@ -22,4 +22,11 @@ public class Neko {
     // Optional
     public Integer fatherId;
     public Integer motherId;
+
+    public Neko() {
+    }
+
+    public Neko(Integer id) {
+        this.id = id;
+    }
 }
