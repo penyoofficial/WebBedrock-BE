@@ -17,7 +17,7 @@ import java.util.List;
 public interface NekoMapper extends BaseMapper<Neko> {
 
     @InsertProvider(type = NekoSql.class, method = "insert")
-    int insert(Neko obj);
+    int add(Neko obj);
 
     @DeleteProvider(type = NekoSql.class, method = "delete")
     int delete(int id);
@@ -25,6 +25,6 @@ public interface NekoMapper extends BaseMapper<Neko> {
     @UpdateProvider(type = NekoSql.class, method = "update")
     int update(Neko obj);
 
-    @SelectProvider(type = NekoSql.class, method = "query")
-    List<Neko> query(Neko obj);
+    @SelectProvider(type = NekoSql.class, method = "select")
+    List<Neko> search(Neko obj);
 }

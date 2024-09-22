@@ -1,5 +1,9 @@
 package net.penyo.webbedrock.po;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import net.penyo.webbedrock.pojo.UserType;
 
 /**
@@ -9,15 +13,18 @@ import net.penyo.webbedrock.pojo.UserType;
  */
 public class User {
 
-    // Key
+    @NotNull
     public Integer id;
 
-    // Required
+    @NotEmpty
     public String loginName;
+    @JsonIgnore
+    @NotEmpty
+    @Pattern(regexp = "^\\w{8,16}$")
     public String password;
+    @NotEmpty
     public UserType userType;
 
-    // Optional
     public String name;
 
     public User() {

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
  * PathVariable};
  * <li>For private data (such as {@code password} and {@code token}): in {@code
  * RequestHeader};
+ * <li>For search parameters: as {@code RequestParam};
  * <li>For others: as {@code RequestBody}.
  * </ul>
  *
@@ -26,19 +27,23 @@ public interface BaseController<PO, SV extends BaseService<PO>> {
 
     SV getService();
 
-    default ResponseEntity<Body> insert(PO po) {
-        return ActionProcessor.ifResult(getService().insert(po));
+    default ResponseEntity<Body> add(PO po) {
+        return ActionProcessor.ifResultOk(getService().add(po));
     }
 
     default ResponseEntity<Body> delete(int id) {
-        return ActionProcessor.ifResult(getService().delete(id));
+        return ActionProcessor.ifResultOk(getService().delete(id));
     }
 
     default ResponseEntity<Body> update(PO po) {
-        return ActionProcessor.ifResult(getService().update(po));
+        return ActionProcessor.ifResultOk(getService().update(po));
     }
 
-    default ResponseEntity<Body> query(PO po, String msg) {
-        return ResponseEntity.ok(new Body(msg, getService().query(po)));
+    default ResponseEntity<Body> query(PO po, String okMsg, String failMsg) {
+        return ActionProcessor.ifResultExist(getService().search(po), okMsg, failMsg);
+    }
+
+    default ResponseEntity<Body> search(PO po) {
+        return ResponseEntity.ok(new Body("查询成功", getService().search(po)));
     }
 }

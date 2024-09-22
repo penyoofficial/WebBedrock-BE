@@ -17,7 +17,7 @@ import java.util.List;
 public interface UserMapper extends BaseMapper<User> {
 
     @InsertProvider(type = UserSql.class, method = "insert")
-    int insert(User obj);
+    int add(User obj);
 
     @DeleteProvider(type = UserSql.class, method = "delete")
     int delete(int id);
@@ -25,6 +25,6 @@ public interface UserMapper extends BaseMapper<User> {
     @UpdateProvider(type = UserSql.class, method = "update")
     int update(User obj);
 
-    @SelectProvider(type = UserSql.class, method = "query")
-    List<User> query(User obj);
+    @SelectProvider(type = UserSql.class, method = "select")
+    List<User> search(User obj);
 }

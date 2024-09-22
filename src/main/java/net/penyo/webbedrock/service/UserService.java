@@ -31,12 +31,12 @@ public class UserService implements BaseService<User> {
     }
 
     @Override
-    public String insert(User obj) {
+    public String add(User obj) {
         obj.password = Digester.sample.hash(obj.password);
-        return BaseService.super.insert(obj).replace("添加", "注册");
+        return BaseService.super.add(obj).replace("添加", "注册");
     }
 
     public boolean isAdmin(String loginName) {
-        return query(new User(loginName)).getFirst().userType == UserType.ADMIN;
+        return search(new User(loginName)).getFirst().userType == UserType.ADMIN;
     }
 }

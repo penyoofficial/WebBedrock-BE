@@ -24,7 +24,7 @@ public class Jwt {
     }
 
     public static String get(String loginName) {
-        return get(loginName, TimePeriod.ONE_DAY);
+        return get(loginName, TimePeriod.ONE_WEEK);
     }
 
     public static String get(String loginName, TimePeriod timePeriod) {

@@ -13,17 +13,17 @@ public interface BaseService<PO> {
 
     BaseMapper<PO> getMapper();
 
-    default String insert(PO obj) {
+    default String add(PO obj) {
         int affected = 0;
         try {
-            affected = getMapper().insert(obj);
+            affected = getMapper().add(obj);
         } catch (Exception _) {
         }
         return affected != 0 ? "添加成功" : "添加失败";
     }
 
     default String delete(int id) {
-        return getMapper().delete(id) != 0 ? "删除成功" : "添加失败";
+        return getMapper().delete(id) != 0 ? "删除成功" : "删除失败";
     }
 
     default String update(PO obj) {
@@ -35,7 +35,7 @@ public interface BaseService<PO> {
         return affected != 0 ? "修改成功" : "修改失败";
     }
 
-    default List<PO> query(PO obj) {
-        return getMapper().query(obj);
+    default List<PO> search(PO obj) {
+        return getMapper().search(obj);
     }
 }

@@ -8,6 +8,9 @@ import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
+
+import java.util.List;
 
 /**
  * An object which provides simple packaging solutions for actions.
@@ -28,28 +31,32 @@ public class ActionProcessor {
     }
 
     public static ResponseEntity<Body> onlyAdminCanDo(String token) {
-        if (onlyLoggedInCanDo(token) == null)
-            if (!userService.isAdmin(Jwt.read(token)))
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new Body("拒绝执行！因为您的权限不足", null));
+        if (!userService.isAdmin(Jwt.read(token)))
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new Body("拒绝执行！因为您的权限不足", null));
         return null;
     }
 
-    public static ResponseEntity<Body> onlyLoggedInCanDo(String token) {
-        if (Jwt.read(token) == null)
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new Body("拒绝执行！因为您尚未登陆或登录失效", null));
-        return null;
-    }
-
-    public static ResponseEntity<Body> ifResult(String result) {
+    public static ResponseEntity<Body> ifResultOk(String result) {
         if (result.contains("成功"))
             return ResponseEntity.ok(new Body(result, null));
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Body(result, null));
+    }
+
+    public static ResponseEntity<Body> ifResultExist(List<?> result, String okMsg, String failMsg) {
+        if (!result.isEmpty())
+            return ResponseEntity.ok(new Body(okMsg, result.getFirst()));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Body(failMsg, null));
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Body> handleException(Exception e) {
         e.printStackTrace();
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Body("拒绝执行！因为未知的错误", null));
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<Body> handleNoResourceFoundException() {
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Body("拒绝执行！因为所请求的服务不存在", null));
     }
 
     @ExceptionHandler(MissingRequestHeaderException.class)
@@ -59,6 +66,6 @@ public class ActionProcessor {
 
     @ExceptionHandler(HandlerMethodValidationException.class)
     public ResponseEntity<Body> handleHandlerMethodValidationException() {
-        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Body("拒绝执行！因为请求数据格式非法", null));
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Body("拒绝执行！因为请求数据非法", null));
     }
 }

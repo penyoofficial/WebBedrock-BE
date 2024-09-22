@@ -9,11 +9,11 @@ import java.util.List;
  */
 public interface BaseMapper<PO> {
 
-    int insert(PO po);
+    int add(PO po);
 
     int delete(int id);
 
     int update(PO po);
 
-    List<PO> query(PO po);
+    List<PO> search(PO po);
 }

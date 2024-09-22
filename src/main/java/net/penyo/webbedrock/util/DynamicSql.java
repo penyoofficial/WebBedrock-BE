@@ -23,7 +23,7 @@ public abstract class DynamicSql {
         List<String> columns = new ArrayList<>();
         List<String> values = new ArrayList<>();
 
-        handleFields(obj, (field, columnName) -> {
+        handleRename(obj, (field, columnName) -> {
             columns.add(columnName);
             values.add(STR."#{\{field.getName()}}");
         });
@@ -44,7 +44,7 @@ public abstract class DynamicSql {
         SQL sql = new SQL();
         sql.UPDATE(tableName());
 
-        handleFields(obj, (field, columnName) -> {
+        handleRename(obj, (field, columnName) -> {
             sql.SET(STR."\{columnName} = #{\{field.getName()}}");
         });
 
@@ -52,18 +52,18 @@ public abstract class DynamicSql {
         return sql.toString();
     }
 
-    public String query(Object obj) {
+    public String select(Object obj) {
         SQL sql = new SQL();
         sql.SELECT("*").FROM(tableName());
 
-        handleFields(obj, (field, columnName) -> {
+        handleRename(obj, (field, columnName) -> {
             sql.WHERE(STR."\{columnName} = #{\{field.getName()}}");
         });
 
         return sql.toString();
     }
 
-    private void handleFields(Object obj, BiConsumer<Field, String> fieldHandler) {
+    private void handleRename(Object obj, BiConsumer<Field, String> fieldHandler) {
         for (Field field : obj.getClass().getDeclaredFields()) {
             field.setAccessible(true);
             try {
@@ -83,4 +83,3 @@ public abstract class DynamicSql {
         }
     }
 }
-
